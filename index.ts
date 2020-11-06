@@ -1,3 +1,4 @@
+export {};
 const express = require('express');
 const path = require('path')
 const bodyParser = require('body-parser');
@@ -28,8 +29,8 @@ app.use(express.static(path.resolve('./client/build')))
 
 app.get('*', (req, res) => res.sendFile(path.resolve('client/build/index.html')));
 
-http.listen(3000, () => {
-  console.log('listening on *:3000');
-});
+// http.listen(apiPort, () => {
+//   console.log('listening on *:3000');
+// });
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))

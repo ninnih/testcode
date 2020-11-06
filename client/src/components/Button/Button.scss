@@ -1,0 +1,14 @@
+@import "../../variables.scss";
+
+.button {
+	padding: 10px 15px;	
+	border-radius: 30px;
+	border: none;
+	transition: all ease-in-out .25s;
+	background-color: $blue;
+
+	&:hover {
+		background-color: $green;
+		cursor: pointer;
+	}
+}

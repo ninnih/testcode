@@ -1,25 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, FC } from 'react';
+import './App.scss';
+import Header from './components/Header/Header';
+import MainRoutes from './modules/MainRoutes/MainRoutes';
+import InputModal from './components/InputModal/InputModal';
 
-const App = () => {
+
+
+const App: FC = () => {
+  const [modal, setModal] = useState<boolean | null>(false);
+
+  const openModal = (e: any) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    !modal ? setModal(true) : setModal(false)
+    console.log(e)
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section className="mainwrapper">
+      <MainRoutes/>
+      <Header openModal={openModal}/>
+      {modal ? <InputModal openModal={openModal}/> : null}
+    </section>
   );
 }
 

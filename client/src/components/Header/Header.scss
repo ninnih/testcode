@@ -1,0 +1,43 @@
+@import "../../variables.scss";
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: $white;
+	height: 80px;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+
+	.item {
+		position: absolute;
+
+		&--createnew {
+			display: none;
+			left: 10px;
+
+			@media (min-width: $breakpoint-md) {
+				display: block;
+				left: 2%;
+      }
+		}
+
+		&--identity {
+			left: 30px;
+
+			@media (min-width: $breakpoint-md) {
+				left: 7%
+      }
+		}
+
+		&--menu {
+			right: 10px;
+
+			@media (min-width: $breakpoint-md) {
+				right: 2%;
+      }
+		}
+	}
+}

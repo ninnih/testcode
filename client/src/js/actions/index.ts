@@ -1,12 +1,10 @@
-// import { 
-//   GET_PROJECTS,
-//   FILTER_PROJECTS,
-//   GET_POSTS
-// } from '../constants/index';
+import { 
+	ADD_REMINDER
+} from '../constants/index';
 
-// export const loadProjects = payload => {
-//   return {
-//       type: GET_PROJECTS,
-//       payload
-//   }
-// }
+export const addReminder = (payload: Object) => {
+  return {
+      type: ADD_REMINDER,
+      payload
+  }
+}

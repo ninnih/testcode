@@ -1,3 +1,7 @@
-// import store from '../js/store/index';
+import Store from '../js/store/index';
 
-// window.store = store;
+declare global {
+	interface Window { store: any; }
+}
+
+window.store = Store;

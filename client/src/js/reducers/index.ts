@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
-import projectReducer from './projectReducer';
-import postReducer from './postReducer';
+import reminderReducer from './reminderReducer';
 
 export default combineReducers({
-  projectReducer,
-  postReducer
+  reminderReducer
 });

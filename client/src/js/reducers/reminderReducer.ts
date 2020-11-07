@@ -1,13 +1,19 @@
-import { ReminderActions } from './../constants/index';
-import { ReminderState } from './../types/index';
 import { 
-  ADD_REMINDER
+  ReminderState, 
+  ReminderActions 
+} from './../types/index';
+
+import { 
+  ADD_REMINDER,
+  EDIT_TASK
 } from '../constants/index';
 
 const initialState: ReminderState = {
 	data: null,
 	loading: false,
-	error: ''
+  error: '',
+  all: [],
+  results: [],
 };
 
 const reminderReducer = (state = initialState, action: ReminderActions) => {
@@ -19,10 +25,16 @@ const payload = action.payload;
 			return {
         ...state, 
         all: payload,
-        results: payload,
+        results: [...state.results, payload],
         loading: false
       }
-		
+    
+    case EDIT_TASK:
+      console.log(payload)
+      return {
+        ...state
+      }
+
     default:
 			return state;
   }

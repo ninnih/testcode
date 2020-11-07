@@ -72,6 +72,7 @@ main {
 button {
   border: none;
   background: none;
+  width: min-content;
 }
 
 ::-webkit-scrollbar-track

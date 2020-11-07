@@ -5,7 +5,33 @@
 	width: 25%;
 	max-width: 400px;
 	min-width: 300px;
+	margin: 0 10px;
 	border-radius: 7px;
 	background-color: white;
 	box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.15);
+
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 50px;
+		padding: 10px;
+		background-color: $blue;
+		border-radius: 7px 7px 0 0 ;
+	
+	}
+
+	&__body {
+		article {
+			ul {
+				li {
+					margin: 5%;
+					background-color: whitesmoke;
+					padding: 5px;
+					border-radius: 3px;
+					border-bottom: 2px solid grey;
+				}
+			}
+		}
+	}
 }

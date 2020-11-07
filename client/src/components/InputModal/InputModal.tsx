@@ -1,5 +1,8 @@
 import React, { FC, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addReminder } from '../../js/actions/index'
 import './InputModal.scss';
+import { v4 as uuidv4 } from 'uuid';
 
 import Button from '../Button/Button'
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -11,17 +14,81 @@ interface Props {
 	openModal: (e: any) => void;
 }
 
-const InputModal: FC<Props> = ({ openModal }) => {
-	const [tasks, setTasks] = useState<number>(0)
+interface Input { 
+	done: boolean,
+	title: string,
+	owner: string,
+	tasks: Array<any>,
+	urgent: boolean,
+	error: string,
+	id: string,
+	edit: boolean
+}
 
-	console.log(tasks)
-	const addTaskInput = (e: any) => {
+const InputModal: FC<Props> = ({ openModal }) => {
+	const dispatch = useDispatch()
+
+	const [input, setInput] = useState<Input>({
+		title: '',
+		done: false,
+		owner: '',
+		tasks: [{}],
+		urgent: false,
+		error: '',
+		id: '',
+		edit: false
+	})
+	
+	const [tasks, setTasks] = useState<number>(1)
+
+	const addTaskInputField = (e: any) => {
 		e.preventDefault()
 		e.stopPropagation()
 		setTasks(prevCount => prevCount + 1)
 	}
 
-	[...Array(tasks)].map((e, i) => (<span className="busterCards" key={i}>♦</span>))
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const taskArr: any = [];
+		let target = Array.from(document.getElementsByName('task'));
+
+		target.map((task: any) => {
+			taskArr.push({
+				[task.id]: task.value,
+				done: false,
+				id: uuidv4(),
+				edit: false
+			})
+		})
+
+		setInput({
+			...input,
+			tasks: taskArr,
+			done: false,
+			owner: 'example',
+			[e.target.id]: e.target.value,
+			urgent: false,
+			id: uuidv4(),
+			edit: false
+		})
+	}
+
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault()
+		if(input.title === '') {
+			setInput({
+				...input,
+				title: '',
+				error: 'Please enter a task!'
+			})
+		} else {
+			dispatch(addReminder(input))
+			setInput({
+				...input,
+				title: '',
+				error: ''
+			})
+		}
+	}
 
 	return (
 		<section className="inputmodal">
@@ -30,7 +97,10 @@ const InputModal: FC<Props> = ({ openModal }) => {
 				onClick={(e) => {
 					openModal(e)
 					}}></section>
-			<form action="" className="inputform">
+			<form 
+				action="" 
+				className="inputform"
+				onSubmit={handleSubmit}>
 				<section>
 						<article className="closebutton">
 							<button onClick={(e) => {
@@ -42,11 +112,26 @@ const InputModal: FC<Props> = ({ openModal }) => {
 						</article>
 				</section>
 				<section>
-				{[...Array(tasks)].map((e, i) => (<Task></Task>))}
-					<Task></Task>
+					<article>
+						<label htmlFor="tasktitle">Title</label>
+						<input 
+							type="text"
+							id="title"
+							value={input.title}
+							placeholder="Add a title"
+							onChange={handleChange}
+							></input>
+					</article>
+				{[...Array(tasks)].map((e, i) => 
+					(<Task 
+						type="text" 
+						id="task"
+						handleChange={handleChange}
+						input={input}
+						key={i}/>))}
 					<article>
 						<Tooltip title="Add another task" placement="left">
-							<button onClick={addTaskInput}>
+							<button onClick={addTaskInputField}>
 								<AddIcon/>
 							</button>
 						</Tooltip>

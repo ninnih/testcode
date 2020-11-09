@@ -12,7 +12,7 @@ export interface AddReminderAction {
 
 export interface EditTaskAction {
 	type: typeof EDIT_TASK
-	payload: Object
+	payload: any
 }
 
 export interface ReminderState {
@@ -20,16 +20,22 @@ export interface ReminderState {
 	loading: boolean;
 	error: string;
 	all: any;
-	results: any
+	results: any;
 }
 
 export interface ReminderData {
 	done: boolean,
 	title: string,
 	owner: string,
-	tasks: Array<Object>,
+	tasks: TaskData | null,
 	urgent: boolean,
 	error: string,
 	id: number
 }
 
+export interface TaskData {
+	edit: boolean,
+	done: boolean,
+	id: string,
+	task: string
+}

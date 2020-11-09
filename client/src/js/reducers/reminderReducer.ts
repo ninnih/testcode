@@ -8,6 +8,7 @@ import {
   EDIT_TASK
 } from '../constants/index';
 
+
 const initialState: ReminderState = {
 	data: null,
 	loading: false,
@@ -30,10 +31,21 @@ const payload = action.payload;
       }
     
     case EDIT_TASK:
-      console.log(payload)
+      let content = Object.assign({}, state);
+
+      content.all.tasks = content.all.tasks.map((task: any) => {
+        const newObj = {...task};
+        if(newObj.id === payload.id) {
+          newObj.edit = payload.edit
+        }
+        return newObj
+      })
+
       return {
-        ...state
-      }
+      ...state,
+      results: [content.all],
+      all: {...state.all}
+    }
 
     default:
 			return state;

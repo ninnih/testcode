@@ -26,7 +26,7 @@ interface Input {
 }
 
 const InputModal: FC<Props> = ({ openModal }) => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 
 	const [input, setInput] = useState<Input>({
 		title: '',

@@ -1,36 +1,38 @@
 export {};
 const express = require('express');
-const path = require('path')
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const fetch = require('node-fetch');
+const path = require('path');
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
-const apiPort = process.env.PORT || 8000;
-
-app.use(bodyParser.urlencoded({ extended: true }));
+const socketIo = require('socket.io');
+const http = require('http');
 app.use(cors({
-  origin: true,
-  credentials: true,
+  credentials: true, 
+  origin: true
 }))
+
+const server = http.createServer(app);
+const io = socketIo(server)
+
+const apiPort = process.env.PORT || 8000;
+app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(express.static(__dirname + './../public'));
+app.use(express.static(path.resolve('./client/build')))
+// app.use(cors({
+//   origin: 'http://127.0.0.1:3000',
+//   credentials: true,
+// }))
+
+
 app.use(bodyParser.json());
 
-
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-});
-
+const connections = []
 io.on('connection', (socket) => {
   console.log('a user connected');
+  connections.push(socket)
 });
 
-app.use(express.static(path.resolve('./client/build')))
 
-app.get('*', (req, res) => res.sendFile(path.resolve('client/build/index.html')));
+// app.get('*', (req, res) => res.sendFile(path.resolve('client/build/index.html')));
 
-// http.listen(apiPort, () => {
-//   console.log('listening on *:3000');
-// });
-
-app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))
+server.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))

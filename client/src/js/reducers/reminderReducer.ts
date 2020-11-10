@@ -10,11 +10,7 @@ import {
 } from '../constants/index';
 
 
-const initialState: ReminderState = {
-	data: null,
-	loading: false,
-  error: '',
-  all: [],
+const initialState = {
   results: [],
 };
 
@@ -26,7 +22,6 @@ console.log(action)
 		case ADD_REMINDER:
 			return {
         ...state, 
-        all: [payload, ...state.all],
         results: [payload, ...state.results],
       }
     
@@ -46,6 +41,7 @@ console.log(action)
 
       return {
         ...state,
+        results: [...state.results, ]
         
       }
     //   return {

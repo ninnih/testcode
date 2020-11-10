@@ -7,8 +7,6 @@ const Home = () => {
 	return (
 		<main>
 			<Board />
-			{/* <Button type="click" value="me"/>
-			<Button type="another" value="Diffferent" /> */}
 		</main>
 	)
 }

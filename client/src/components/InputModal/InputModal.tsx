@@ -1,8 +1,12 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addReminder } from '../../js/actions/index'
 import './InputModal.scss';
 import { v4 as uuidv4 } from 'uuid';
+import { 
+	addReminder,
+	addReminderSocketAction
+ } from '../../js/actions/index'
+
 
 import Button from '../Button/Button'
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -11,7 +15,8 @@ import AddIcon from '@material-ui/icons/Add';
 import { Tooltip } from '@material-ui/core';
 
 interface Props {
-	openModal: (e: any) => void;
+	openModal: (e: any) => void,
+	socket: any
 }
 
 interface Input { 
@@ -25,7 +30,7 @@ interface Input {
 	edit: boolean
 }
 
-const InputModal: FC<Props> = ({ openModal }) => {
+const InputModal: FC<Props> = ({ openModal, socket }) => {
 	const dispatch = useDispatch();
 
 	const [input, setInput] = useState<Input>({
@@ -81,7 +86,7 @@ const InputModal: FC<Props> = ({ openModal }) => {
 				error: 'Please enter a task!'
 			})
 		} else {
-			dispatch(addReminder(input))
+			dispatch(addReminderSocketAction(input, socket))
 			setInput({
 				...input,
 				title: '',
@@ -89,6 +94,13 @@ const InputModal: FC<Props> = ({ openModal }) => {
 			})
 		}
 	}
+
+	// useEffect(() => {
+	// 	socket.on('reminderAdded', (reminderDataResponse: any) => {
+	// 		dispatch(addReminder(reminderDataResponse))
+	// 	})
+	// }, [dispatch, socket])
+
 
 	return (
 		<section className="inputmodal">

@@ -1,4 +1,3 @@
-export {};
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -27,9 +26,24 @@ app.use(express.static(path.resolve('./client/build')))
 app.use(bodyParser.json());
 
 const connections = []
-io.on('connection', (socket) => {
+const reminderList = [];
+io.on('connect', (socket) => {
   console.log('a user connected');
   connections.push(socket)
+
+  // socket.emit('initialReminder', reminderList)
+
+  socket.on('addReminder', addReminderData => {
+    // write mongoDB model here
+    reminderList.push(addReminderData)
+
+    io.emit('reminderAdded', addReminderData)
+  })
+
+  socket.on('disconnect', () => {
+    socket.removeAllListeners();
+ });
+
 });
 
 

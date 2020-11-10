@@ -6,8 +6,8 @@ import './Board.scss';
 import Card from '../Card/Card';
 
 const Board: FC = () => {
-	const cards = useSelector((state: RootState) => state.reminders.results)
-
+	const cards = useSelector((state: any) => state.reminders.results)
+	console.log(cards)
 	return (
 		<section className="board">
 			<section className="board__wrapper">

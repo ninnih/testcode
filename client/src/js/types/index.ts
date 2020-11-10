@@ -1,9 +1,10 @@
 import {
 	ADD_REMINDER,
-	EDIT_TASK
+	EDIT_TASK,
+	INITIAL_TASKS
 } from './../constants/index';
 
-export type ReminderActions = AddReminderAction | EditTaskAction;
+export type ReminderActions = AddReminderAction | EditTaskAction | InitialTasksAction;
 
 export interface AddReminderAction {
 	type: typeof ADD_REMINDER
@@ -12,6 +13,12 @@ export interface AddReminderAction {
 
 export interface EditTaskAction {
 	type: typeof EDIT_TASK
+	payload: any
+}
+
+
+export interface InitialTasksAction {
+	type: typeof INITIAL_TASKS
 	payload: any
 }
 
@@ -27,10 +34,11 @@ export interface ReminderData {
 	done: boolean,
 	title: string,
 	owner: string,
-	tasks: TaskData | null,
+	tasks: Array<TaskData> | null,
 	urgent: boolean,
 	error: string,
-	id: number
+	id: number,
+	edit: boolean
 }
 
 export interface TaskData {

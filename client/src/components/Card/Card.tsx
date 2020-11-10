@@ -49,24 +49,28 @@ const Card: FC<Props> = ({ title, tasks, id }) => {
 			<section className="card__body">
 				<article>
 					<ul>
-						{tasks.map(task => (
-							!task.edit ?
-							<li>
-								<h4 
-									onClick={(e) => editableTask(e)}
-									id={task.id}>
-										{task.task}
-								</h4>
-							</li>
-								: <><input 
-									type="text" 
-									value={task.task}
-									/>
-									<h2
-									onClick={(e) => editableTask(e)}
-									id={task.id}>close</h2>
-									</>
-						))}
+						{tasks === undefined ? 
+							null
+								: 
+								<>{tasks.map(task => (
+									!task.edit ?
+									<li>
+										<h4 
+											onClick={(e) => editableTask(e)}
+											id={task.id}>
+												{task.task}
+										</h4>
+									</li>
+										: <><input 
+											type="text" 
+											value={task.task}
+											/>
+											<h2
+											onClick={(e) => editableTask(e)}
+											id={task.id}>close</h2>
+											</>
+								))}</>
+						}
 					</ul>
 				</article>
 			</section>

@@ -46,6 +46,10 @@ io.on('connect', (socket) => {
     io.emit('toggleDeleteReceived', deleteReminderData)
   })
 
+  socket.on('editReminder', editReminderData => {
+    io.emit('editReminderReceived', editReminderData)
+  })
+
   socket.on('disconnect', () => {
     socket.removeAllListeners();
  });

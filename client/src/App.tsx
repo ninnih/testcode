@@ -7,7 +7,8 @@ import InputModal from './components/InputModal/InputModal';
 import { 
   addReminder, 
   toggleReminder,
-  deleteReminder
+  deleteReminder,
+  editTask
  } from './js/actions/index'
 const io = require('socket.io-client');
 let socket = io('http://localhost:8000', {transports: ['websocket']});
@@ -38,6 +39,11 @@ const App: FC = () => {
     socket.on('toggleDeleteReceived', (deleteResponse: any) => {
       dispatch(deleteReminder(deleteResponse))
     })
+
+    socket.on('editReminderReceived', (deleteResponse: any) => {
+      dispatch(editTask(deleteResponse))
+    })
+
 	}, [dispatch, socket])
 
 

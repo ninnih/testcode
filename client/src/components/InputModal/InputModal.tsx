@@ -61,7 +61,8 @@ const InputModal: FC<Props> = ({ openModal, socket }) => {
 				[task.id]: task.value,
 				done: false,
 				id: uuidv4(),
-				edit: false
+				edit: false,
+				cardid: ''
 			})
 		})
 
@@ -76,6 +77,7 @@ const InputModal: FC<Props> = ({ openModal, socket }) => {
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
+
 		if(input.title === '') {
 			setInput({
 				...input,
@@ -91,13 +93,6 @@ const InputModal: FC<Props> = ({ openModal, socket }) => {
 			})
 		}
 	}
-
-	// useEffect(() => {
-	// 	socket.on('reminderAdded', (reminderDataResponse: any) => {
-	// 		dispatch(addReminder(reminderDataResponse))
-	// 	})
-	// }, [dispatch, socket])
-
 
 	return (
 		<section className="inputmodal">

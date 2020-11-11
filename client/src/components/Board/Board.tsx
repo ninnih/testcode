@@ -9,7 +9,7 @@ interface Props {
 	socket: any
 }
 
-const Board: FC<Props> = ({socket}) => {
+const Board: FC<Props> = ({ socket }) => {
 	const cards = useSelector((state: any) => state.reminders.results)
 	console.log(cards)
 	return (
@@ -20,9 +20,9 @@ const Board: FC<Props> = ({socket}) => {
 				{cards.map((card: any, i: number) => (
 					<Card
 						title={card.title}
-						tasks={card.tasks}
 						id={card.id}
 						done={card.done}
+						editable={card.edit}
 						socket={socket}
 					/>
 					))}

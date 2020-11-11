@@ -7,7 +7,6 @@ import {
 } from '../constants/index';
 
 export const addReminder = (payload: Object) => {
-  console.log(payload)
   return {
       type: ADD_REMINDER,
       payload
@@ -15,6 +14,7 @@ export const addReminder = (payload: Object) => {
 }
 
 export const editTask = (payload: Object) => {
+  console.log(payload)
   return {
     type: EDIT_TASK,
     payload
@@ -63,10 +63,16 @@ export const toggleReminderSocketAction = (payload: Object, socket: any) => {
   }
 }
 
-
 export const deleteReminderSocketAction = (payload: Object, socket: any) => {
   return (dispatch: any) => {
     console.log(payload)
     socket.emit('deleteReminder', payload)
+  }
+}
+
+export const editReminderSocketAction = (payload: Object, socket: any) => {
+  return (dispatch: any) => {
+    console.log(payload)
+    socket.emit('editReminder', payload)
   }
 }

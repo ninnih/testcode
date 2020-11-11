@@ -19,19 +19,24 @@ const initialState = {
 
 const reminderReducer = (state = initialState, action: ReminderActions) => {
 const payload = action.payload;
-console.log(action)
 
 	switch (action.type) {
 		case ADD_REMINDER:
+      const newArr = payload.tasks.map((task: any) => {
+				let item = Object.assign({}, task);
+				item.cardid = payload.id
+				return item
+      })
+      console.log(state)
 			return {
         ...state, 
         results: [payload, ...state.results],
-        tasks: [payload.tasks, ...state.results],
+        tasks: state.tasks.concat(newArr)
       }
 
     case TOGGLE_REMINDER:
-      console.log(payload)
       return {
+        ...state,
         results: state.results.map((task: any) =>
           task.id === payload.id ? { 
 						...task, 
@@ -43,46 +48,30 @@ console.log(action)
 
     case DELETE_REMINDER:
       return {
+        ...state,
       results: state.results.filter((task: any) => task.id !== payload.id)
     }
 
-    
     case EDIT_TASK:
-      // console.log(payload)
-      // console.log(state.results.map((item:any)=>item))
-      // let content = Object.assign({}, state);
-      // console.log(content)
-      //   content.results.tasks = content.results.tasks.map((task: any) => {
-      //     const newObj = {...task};
-      //     if(newObj.id === payload.id) {
-      //       newObj.edit = payload.edit
-      //       console.log(newObj)
-      //     }
-      //     return newObj
-      //   })
-      
-      let result = {}
-        state.results.map((todo: any) => {
-          todo.tasks.filter((task: any) => {
-            if(task.id === payload.id) {
-              console.log(task.id, payload.id)
-              task.done = true
-              console.log(task)
-              return task
-            }
-          })
-        })
-      console.log(result)
+      console.log(payload)
       return {
         ...state,
-        results: [...state.results]
-        
+        results: state.results.map((task: any) => 
+        task.id === payload.id ? {
+          ...task,
+          edit: !task.edit
+        } 
+          : task
+      )    
+        // tasks: state.tasks.map((task: any) => 
+        //     task.id === payload.id ? {
+        //       ...task,
+        //       edit: !task.edit
+        //     } 
+        //       : task
+        //   )    
       }
-    //   return {
-    //   ...state,
-    //   results: [content.all],
-    //   all: [...state.all]
-    // }
+
 
     default:
 			return state;

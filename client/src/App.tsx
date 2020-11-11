@@ -1,17 +1,14 @@
 import React, { useState, useEffect, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-// import { 
-// 	initialRemindersAction
-//  } from './js/actions/index'
-
 import './App.scss';
 import Header from './components/Header/Header';
 import MainRoutes from './modules/MainRoutes/MainRoutes';
 import InputModal from './components/InputModal/InputModal';
 import { 
-	addReminder
+  addReminder, 
+  toggleReminder,
+  deleteReminder
  } from './js/actions/index'
-// import {io} from "socket.io-client";
 const io = require('socket.io-client');
 let socket = io('http://localhost:8000', {transports: ['websocket']});
 
@@ -32,7 +29,15 @@ const App: FC = () => {
 	useEffect(() => {
 		socket.on('reminderAdded', (reminderDataResponse: any) => {
 			dispatch(addReminder(reminderDataResponse))
-		})
+    })
+    
+    socket.on('toggleReminderReceived', (toggleResponse: any) => {
+      dispatch(toggleReminder(toggleResponse))
+    })
+    
+    socket.on('toggleDeleteReceived', (deleteResponse: any) => {
+      dispatch(deleteReminder(deleteResponse))
+    })
 	}, [dispatch, socket])
 
 
@@ -46,7 +51,7 @@ const App: FC = () => {
   
   return (
     <section className="mainwrapper">
-      <MainRoutes/>
+      <MainRoutes socket={socket}/>
       <Header openModal={openModal}/>
       {modal ? <InputModal openModal={openModal} socket={socket}/> : null}
     </section>

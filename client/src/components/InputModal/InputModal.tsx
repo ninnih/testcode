@@ -68,12 +68,9 @@ const InputModal: FC<Props> = ({ openModal, socket }) => {
 		setInput({
 			...input,
 			tasks: taskArr,
-			done: false,
-			owner: 'example',
 			[e.target.id]: e.target.value,
 			urgent: false,
 			id: uuidv4(),
-			edit: false
 		})
 	}
 

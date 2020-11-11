@@ -5,7 +5,11 @@ import { RootState } from '../../js/reducers/index';
 import './Board.scss';
 import Card from '../Card/Card';
 
-const Board: FC = () => {
+interface Props {
+	socket: any
+}
+
+const Board: FC<Props> = ({socket}) => {
 	const cards = useSelector((state: any) => state.reminders.results)
 	console.log(cards)
 	return (
@@ -18,6 +22,8 @@ const Board: FC = () => {
 						title={card.title}
 						tasks={card.tasks}
 						id={card.id}
+						done={card.done}
+						socket={socket}
 					/>
 					))}
 					</>

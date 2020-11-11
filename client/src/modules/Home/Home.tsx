@@ -1,12 +1,16 @@
 import Button from '../../components/Button/Button'
-import React, { useState } from 'react'
+import React, { useState, FC } from 'react'
 import Board from '../../components/Board/Board';
 
-const Home = () => {
+interface Props {
+	socket: any
+}
+
+const Home: FC<Props> = ({ socket }) => {
 
 	return (
 		<main>
-			<Board />
+			<Board socket={socket}/>
 		</main>
 	)
 }

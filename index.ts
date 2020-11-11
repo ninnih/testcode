@@ -34,10 +34,16 @@ io.on('connect', (socket) => {
   // socket.emit('initialReminder', reminderList)
 
   socket.on('addReminder', addReminderData => {
-    // write mongoDB model here
     reminderList.push(addReminderData)
-
     io.emit('reminderAdded', addReminderData)
+  })
+
+  socket.on('toggleReminder', toggleReminderData => {
+    io.emit('toggleReminderReceived', toggleReminderData)
+  })
+
+  socket.on('deleteReminder', deleteReminderData => {
+    io.emit('toggleDeleteReceived', deleteReminderData)
   })
 
   socket.on('disconnect', () => {

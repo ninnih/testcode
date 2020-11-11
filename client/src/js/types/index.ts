@@ -1,10 +1,17 @@
 import {
 	ADD_REMINDER,
 	EDIT_TASK,
-	INITIAL_TASKS
+	INITIAL_TASKS,
+	TOGGLE_REMINDER,
+	DELETE_REMINDER
 } from './../constants/index';
 
-export type ReminderActions = AddReminderAction | EditTaskAction | InitialTasksAction;
+export type ReminderActions = 
+AddReminderAction | 
+EditTaskAction | 
+InitialTasksAction | 
+ToggleReminderAction |
+DeleteReminderAction;
 
 export interface AddReminderAction {
 	type: typeof ADD_REMINDER
@@ -16,6 +23,15 @@ export interface EditTaskAction {
 	payload: any
 }
 
+export interface ToggleReminderAction {
+	type: typeof TOGGLE_REMINDER
+	payload: any
+}
+
+export interface DeleteReminderAction {
+	type: typeof DELETE_REMINDER
+	payload: any
+}
 
 export interface InitialTasksAction {
 	type: typeof INITIAL_TASKS

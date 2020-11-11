@@ -1,15 +1,24 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { editTask } from '../../js/actions/index'
+import { 
+	editTask, 
+	toggleReminderSocketAction,
+	deleteReminderSocketAction 
+} from '../../js/actions/index'
 import './Card.scss';
 import { RootState } from '../../js/reducers/index';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
+import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 
 interface Props {
 	title: string,
 	tasks: [
 		title: any
 	],
-	id: string
+	id: string,
+	done: boolean
+	socket: any
 }
 
 interface Tasks {
@@ -17,8 +26,10 @@ interface Tasks {
 	id: string
 }
 
-const Card: FC<Props> = ({ title, tasks, id }) => {
+const Card: FC<Props> = ({ title, tasks, id, done, socket }) => {
 	const dispatch = useDispatch();
+	// const tasks = useSelector((state: any) => state.reminders.tasks)
+
 
 	const [edit, setEdit] = useState<Tasks>({
 		edit: false,
@@ -30,11 +41,25 @@ const Card: FC<Props> = ({ title, tasks, id }) => {
 				edit: !edit.edit,
 				id: e.target.id,
 			})
+			submitEdit()
+	}
+
+	const submitEdit = () => {
+		dispatch(editTask(edit))
+	}
+
+	const toggleDone = (e: any) => {
+		const id = {id: e.currentTarget.id}
+			dispatch(toggleReminderSocketAction(id, socket))
 	}
 	
-  useEffect(() => {
-		dispatch(editTask(edit))
-  },[edit, dispatch])
+	const deleteDone = (e:any) => {
+		const id = {id: e.currentTarget.id}
+		dispatch(deleteReminderSocketAction(id, socket))
+	}
+  // useEffect(() => {
+	// 	dispatch(editTask(edit))
+  // },[edit, dispatch])
 
 	return (
 		<article className="card">
@@ -43,7 +68,19 @@ const Card: FC<Props> = ({ title, tasks, id }) => {
 					<h3>{title}</h3>
 				</section>
 				<section>
-					<input type="checkbox" name="" id=""/>
+					{done ? 
+					<button 
+						id={id}
+						onClick={toggleDone}>
+						<CheckCircleRoundedIcon/>
+					</button>
+					: 
+					<button
+						id={id}
+						onClick={toggleDone}>
+						<CheckCircleOutlineIcon />
+					</button>
+					}
 				</section>
 			</section>
 			<section className="card__body">
@@ -75,7 +112,13 @@ const Card: FC<Props> = ({ title, tasks, id }) => {
 				</article>
 			</section>
 			<section className="card__footer">
-
+				{done ?
+				<button 
+					id={id}
+					onClick={deleteDone}>
+					<DeleteForeverRoundedIcon/>
+				</button>
+				: null}
 			</section>
 		</article>
 	)

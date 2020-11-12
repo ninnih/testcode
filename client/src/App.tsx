@@ -14,7 +14,7 @@ import {
 
 
 const io = require('socket.io-client');
-let socket = io('http://ninnih-codetest.herokuapp.com', {transports: ['websocket']});
+let socket = io('https://ninnih-codetest.herokuapp.com', {transports: ['websocket']});
 
 const App: FC = () => {
   const [modal, setModal] = useState<boolean | null>(false);

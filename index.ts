@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 const socketIo = require('socket.io');
-const http = require('https');
+const http = require('http');
 app.use(cors({
   credentials: true, 
   origin: true

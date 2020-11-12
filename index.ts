@@ -17,11 +17,6 @@ const apiPort = process.env.PORT || 8000;
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static(__dirname + './../public'));
 app.use(express.static(path.resolve('./client/build')))
-// app.use(cors({
-//   origin: 'http://127.0.0.1:3000',
-//   credentials: true,
-// }))
-
 
 app.use(bodyParser.json());
 
@@ -29,10 +24,6 @@ const connections = []
 const reminderList = [];
 io.on('connect', (socket) => {
   console.log('a user connected');
-  connections.push(socket)
-
-  // socket.emit('initialReminder', reminderList)
-
   socket.on('addReminder', addReminderData => {
     reminderList.push(addReminderData)
     io.emit('reminderAdded', addReminderData)
@@ -42,18 +33,21 @@ io.on('connect', (socket) => {
     io.emit('toggleReminderReceived', toggleReminderData)
   })
 
-  socket.on('deleteReminder', deleteReminderData => {
-    io.emit('toggleDeleteReceived', deleteReminderData)
-  })
-
   socket.on('editReminder', editReminderData => {
     io.emit('editReminderReceived', editReminderData)
+  })
+
+  socket.on('updateReminder', updateReminderData => {
+    io.emit('updateReminderDataReceived', updateReminderData)
+  })
+
+  socket.on('deleteReminder', deleteReminderData => {
+    io.emit('toggleDeleteReceived', deleteReminderData)
   })
 
   socket.on('disconnect', () => {
     socket.removeAllListeners();
  });
-
 });
 
 

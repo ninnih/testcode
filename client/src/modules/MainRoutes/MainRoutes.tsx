@@ -12,7 +12,6 @@ const MainRoutes: FC<Props> = ({socket}) => {
   return (
     <Switch> 
       <Route exact path='/' render={() => <Home socket={socket}/>}></Route>
-			{/* <Route exact path='/projects' render={(props) => <Home {...props} />}></Route> */}
 		</Switch>
   );
 }

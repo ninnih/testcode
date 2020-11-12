@@ -8,20 +8,35 @@ import {
   addReminder, 
   toggleReminder,
   deleteReminder,
+  updateReminder,
   editTask
- } from './js/actions/index'
+ } from './js/actions/index';
+
+
 const io = require('socket.io-client');
-let socket = io('http://localhost:8000', {transports: ['websocket']});
+let socket = io('http://ninnih-codetest.herokuapp.com', {transports: ['websocket']});
 
 const App: FC = () => {
   const [modal, setModal] = useState<boolean | null>(false);
   const dispatch = useDispatch();
-  // dispatch(initialRemindersAction(socket))
+  // const [username, setUsername] = useState({
+  //   socket: socket.id,
+  //   username: '',
+  //   usernameSet: false
+  // })
+  // const changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setUsername({
+  //     ...username,
+  //     username: e.target.value
+  //   })
+  // }
+
+  // const submitName = (e:any) => {
+
+  // }
 
   useEffect(() => {
     socket.on('connect', () => {
-      console.log(socket.connected); 
-
      });
 
     }, [])
@@ -40,11 +55,15 @@ const App: FC = () => {
       dispatch(deleteReminder(deleteResponse))
     })
 
+    socket.on('updateReminderDataReceived', (updateResponse: any) => {
+      dispatch(updateReminder(updateResponse))
+    })
+
     socket.on('editReminderReceived', (deleteResponse: any) => {
       dispatch(editTask(deleteResponse))
     })
 
-	}, [dispatch, socket])
+	}, [dispatch])
 
 
 
@@ -60,6 +79,14 @@ const App: FC = () => {
       <MainRoutes socket={socket}/>
       <Header openModal={openModal}/>
       {modal ? <InputModal openModal={openModal} socket={socket}/> : null}
+      {/* {!username.usernameSet ? 
+      <section>
+        <form>
+          <input type="text" id="username"
+          onChange={changeName}/>
+          <button type="submit">submit</button>
+        </form>
+      </section>:null} */}
     </section>
   );
 }

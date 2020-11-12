@@ -1,18 +1,20 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { 
-	editTask, 
+import {
+	editTask,
 	toggleReminderSocketAction,
-	deleteReminderSocketAction, 
-	editReminderSocketAction
+	deleteReminderSocketAction,
+	editReminderSocketAction,
+	updateReminderSocketAction,
 } from '../../js/actions/index'
 import './Card.scss';
-import { RootState } from '../../js/reducers/index';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import EditIcon from '@material-ui/icons/Edit';
-import { Input } from '@material-ui/core';
+import Button from '../Button/Button';
+import { Tooltip } from '@material-ui/core';
+
 
 interface Props {
 	title: string,
@@ -30,11 +32,14 @@ interface Tasks {
 const Card: FC<Props> = ({ title, id, done, socket, editable }) => {
 	const dispatch = useDispatch();
 	const tasks = useSelector((state: any) => state.reminders.tasks)
-	console.log(tasks)
 	const [edit, setEdit] = useState<Tasks>({
 		edit: false,
 		id: '',
 	})
+	const [updateCardData, setUpdateCardData] = useState({
+		cardtitle: title,
+		cardid: ''
+	});
 
 	const editableCard = (e: any) => {
 		e.preventDefault()
@@ -42,6 +47,31 @@ const Card: FC<Props> = ({ title, id, done, socket, editable }) => {
 				edit: !edit.edit,
 				id: e.currentTarget.id,
 			})
+	}
+
+	const updateCard = (e:any) => {
+		setUpdateCardData({
+			cardtitle: e.target.value,
+			cardid: e.target.id
+		})
+		// socket.emit('editData', updateCardData.cardtitle)
+	}
+
+	// socket.on('editDataReceived', (editDataResponse: any) => {
+	// 	// setUpdateCardData(editDataResponse)
+	// 	setUpdateCardData({
+	// 		...updateCardData,
+	// 		cardtitle: editDataResponse
+	// 	})
+	// })
+
+	const submitUpdatedCard = (e: React.FormEvent) => {
+		e.preventDefault()
+		dispatch(updateReminderSocketAction(updateCardData, socket))
+		setUpdateCardData({
+			cardtitle: '',
+			cardid: ''
+		})
 	}
 
 	useEffect(() => {
@@ -53,7 +83,7 @@ const Card: FC<Props> = ({ title, id, done, socket, editable }) => {
 		const id = {id: e.currentTarget.id}
 			dispatch(toggleReminderSocketAction(id, socket))
 	}
-	
+
 	const deleteDone = (e:any) => {
 		e.preventDefault()
 		const id = {id: e.currentTarget.id}
@@ -61,69 +91,72 @@ const Card: FC<Props> = ({ title, id, done, socket, editable }) => {
 	}
 
 	return (
-		<form className="card">
-			<section className="card__header">
-				<section>
-					{editable ? 
-					<input type="text"></input>
-				: <h3>{title}</h3>
+			<form className="card" onSubmit={submitUpdatedCard}>
+				<section className="card__header">
+					<section>
+						{editable ?
+						<input
+							type="text"
+							onChange={updateCard}
+							id={id}
+							value={updateCardData.cardtitle}></input>
+					: <h3>{title}</h3>
 
-				}
-				</section>
-				<section>
-					<button
-						id={id}
-						onClick={(e) => editableCard(e)}
-						>
-						<EditIcon/>
-					</button>
-					{done ? 
-					<button 
-						id={id}
-						onClick={toggleDone}>
-						<CheckCircleRoundedIcon/>
-					</button>
-					: 
-					<button
-						id={id}
-						onClick={toggleDone}>
-						<CheckCircleOutlineIcon />
-					</button>
 					}
+					</section>
+					<section className="card__header__icon">
+						<Tooltip title="Edit Reminder">
+							<button
+								id={id}
+								onClick={(e) => editableCard(e)}
+								>
+								<EditIcon/>
+							</button>
+						</Tooltip>
+						<Tooltip title="Mark as done">
+							<button
+								id={id}
+								onClick={toggleDone}>
+								<CheckCircleOutlineIcon/>
+							</button>
+						</Tooltip>
+					</section>
 				</section>
-			</section>
-			<section className="card__body">
-				<article>
-					<ul>
-						{tasks === undefined ? 
-							null
-								: 
-								<>{tasks.map((task: any) => (
-									task.cardid === id ?
-									<li>
-										<h4 
-											onClick={(e) => editableCard(e)}
-											id={task.id}
-											>
-												{task.task}
-										</h4>
-									</li>
-									: null
-								))}</>
-						}
-					</ul>
-				</article>
-			</section>
-			<section className="card__footer">
-				{done ?
-				<button 
-					id={id}
-					onClick={deleteDone}>
-					<DeleteForeverRoundedIcon/>
-				</button>
-				: null}
-			</section>
-		</form>
+				<section className="card__body">
+					<article>
+						<ul>
+							{tasks === undefined ?
+								null
+									:
+									<>{tasks.map((task: any) => (
+										task.cardid === id ?
+										<li>
+											<h4
+												onClick={(e) => editableCard(e)}
+												id={task.id}
+												>
+													{task.task}
+											</h4>
+										</li>
+										: null
+									))}</>
+							}
+						</ul>
+					</article>
+				</section>
+				<section className="card__footer">
+					{editable ?
+					<button
+						id={id}
+						onClick={deleteDone}>
+						<DeleteForeverRoundedIcon/>
+					</button>
+					: null}
+					{editable ? 
+					<Button type="submit" value="Save changes"/>
+					: null}
+				</section>
+			</form>
 	)
 }
 

@@ -23,9 +23,6 @@ const Header: FC<Props> = ({ openModal }) => {
 				<h2>Reminder App</h2>
 				<p>By Ninni Hagström</p>
 			</section>
-			<section className="item item--menu">
-				<MenuIcon />
-			</section>
 		</header>
 	)
 }

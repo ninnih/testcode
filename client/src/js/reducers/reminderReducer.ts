@@ -1,5 +1,4 @@
 import { 
-  ReminderState, 
   ReminderActions
 } from './../types/index';
 
@@ -7,8 +6,8 @@ import {
   ADD_REMINDER,
   EDIT_TASK,
   TOGGLE_REMINDER,
-  DELETE_REMINDER
-  // INITIAL_TASKS
+  DELETE_REMINDER,
+  UPDATE_REMINDER
 } from '../constants/index';
 
 
@@ -27,8 +26,8 @@ const payload = action.payload;
 				item.cardid = payload.id
 				return item
       })
-      console.log(state)
-			return {
+
+      return {
         ...state, 
         results: [payload, ...state.results],
         tasks: state.tasks.concat(newArr)
@@ -46,6 +45,19 @@ const payload = action.payload;
         )
       }
 
+    case UPDATE_REMINDER:
+    return {
+      ...state,
+      results: state.results.map((task: any) =>
+      task.id === payload.cardid ? { 
+        ...task, 
+        title: payload.cardtitle,
+        edit: !task.edit
+      } 
+        : task
+    )
+    }
+
     case DELETE_REMINDER:
       return {
         ...state,
@@ -53,7 +65,6 @@ const payload = action.payload;
     }
 
     case EDIT_TASK:
-      console.log(payload)
       return {
         ...state,
         results: state.results.map((task: any) => 
@@ -62,14 +73,7 @@ const payload = action.payload;
           edit: !task.edit
         } 
           : task
-      )    
-        // tasks: state.tasks.map((task: any) => 
-        //     task.id === payload.id ? {
-        //       ...task,
-        //       edit: !task.edit
-        //     } 
-        //       : task
-        //   )    
+      )     
       }
 
 

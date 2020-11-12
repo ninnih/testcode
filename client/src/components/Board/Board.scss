@@ -2,25 +2,75 @@
 
 .board {
 	width: 100vw;
-	height: calc(50vh - 80px);
+	height: calc(100vh - 100px);
 	margin: auto;
+	padding: 15px;
 	display: flex;
+	flex-direction: column;
 
 	@media (min-width: $breakpoint-md) {
 		width: calc(100vw - 20px);
+		flex-direction: row;
 	}
 
 	&__wrapper {
-		width: 95%;
-		height: 90%;
-		margin: auto;
-		padding: 15px;
+		position: relative;
+		width: 90%;
+		height: 100%;
+		margin: 10px;
+		// padding: 15px;
 		overflow: scroll;
-		overflow-y: hidden;
+		overflow-x: hidden;
 		background-color: $white;
 		border-radius: 7px;
+
+		@media (min-width: $breakpoint-md) {
+			height: 100%;
+			}
+
+		&--todo {
+			width: calc(100% - 20px);
+
+			@media (min-width: $breakpoint-md) {
+			width: 70%;
+			}
+		}
+
+		&--done {
+			width: calc(100% - 20px);
+
+			@media (min-width: $breakpoint-md) {
+				width: 30%;
+			}
+		}
+	}
+
+	&__header {
+		width: 100%;
+		position: sticky;
+		top: 0;
+		left: 0;
+		padding: 15px;
+		z-index: 1;
+
+		&--todo {
+			background-color: $terracotta;
+		}
+
+		&--done {
+			background-color: $green;
+		}
+	}
+
+	&__cards {
+		position: absolute;
+		top: 100px;
+		left: 15px;
+		height: 100%;
+		width: calc(100% - 30px) ;
 		display: flex;
 		justify-content: flex-start;
-		align-items: center;
+		align-items: flex-start;
+		flex-wrap: wrap;
 	}
 }

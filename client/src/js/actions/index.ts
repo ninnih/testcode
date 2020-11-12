@@ -2,6 +2,7 @@ import {
   ADD_REMINDER,
   TOGGLE_REMINDER,
   DELETE_REMINDER,
+  UPDATE_REMINDER,
   EDIT_TASK,
   // INITIAL_TASKS,
 } from '../constants/index';
@@ -14,7 +15,6 @@ export const addReminder = (payload: Object) => {
 }
 
 export const editTask = (payload: Object) => {
-  console.log(payload)
   return {
     type: EDIT_TASK,
     payload
@@ -28,28 +28,19 @@ export const toggleReminder = (payload: Object) => {
   }
 }
 
+export const updateReminder = (payload: Object) => {
+  return {
+    type: UPDATE_REMINDER,
+    payload
+  }
+}
+
 export const deleteReminder = (payload: Object) => {
   return {
     type: DELETE_REMINDER,
     payload
   }
 }
-
-// export const initialTasks = (payload: any) => {
-//   return {
-//     type: INITIAL_TASKS,
-//     payload
-//   }
-// } 
-
-// export const initialRemindersAction = (socket: any) => {
-//   return (dispatch: any) => {
-//     socket.on('initialReminder', (reminderList: Array<Object>) => {
-//       console.log(reminderList)
-//       dispatch(initialTasks(reminderList))
-//     })
-//   }
-// }
 
 export const addReminderSocketAction = (payload: Object, socket: any) => {
   return (dispatch: any) => {
@@ -65,14 +56,18 @@ export const toggleReminderSocketAction = (payload: Object, socket: any) => {
 
 export const deleteReminderSocketAction = (payload: Object, socket: any) => {
   return (dispatch: any) => {
-    console.log(payload)
     socket.emit('deleteReminder', payload)
   }
 }
 
 export const editReminderSocketAction = (payload: Object, socket: any) => {
   return (dispatch: any) => {
-    console.log(payload)
     socket.emit('editReminder', payload)
+  }
+}
+
+export const updateReminderSocketAction = (payload: Object, socket: any) => {
+  return (dispatch: any) => {
+    socket.emit('updateReminder', payload)
   }
 }

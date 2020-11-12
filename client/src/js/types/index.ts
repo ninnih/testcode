@@ -3,6 +3,7 @@ import {
 	EDIT_TASK,
 	INITIAL_TASKS,
 	TOGGLE_REMINDER,
+	UPDATE_REMINDER,
 	DELETE_REMINDER
 } from './../constants/index';
 
@@ -11,6 +12,7 @@ AddReminderAction |
 EditTaskAction | 
 InitialTasksAction | 
 ToggleReminderAction |
+UpdateReminderAction |
 DeleteReminderAction;
 
 export interface AddReminderAction {
@@ -25,6 +27,11 @@ export interface EditTaskAction {
 
 export interface ToggleReminderAction {
 	type: typeof TOGGLE_REMINDER
+	payload: any
+}
+
+export interface UpdateReminderAction {
+	type: typeof UPDATE_REMINDER
 	payload: any
 }
 

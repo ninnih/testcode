@@ -105,7 +105,7 @@ const InputModal: FC<Props> = ({ openModal, socket }) => {
 				action="" 
 				className="inputform"
 				onSubmit={handleSubmit}>
-				<section>
+				<section className="inputform__header">
 						<article className="closebutton">
 							<button onClick={(e) => {
 								openModal(e)
@@ -116,8 +116,8 @@ const InputModal: FC<Props> = ({ openModal, socket }) => {
 						</article>
 				</section>
 				<section>
-					<article>
-						<label htmlFor="tasktitle">Title</label>
+					<article className="inputform__input ">
+						<label htmlFor="tasktitle">Todo Title</label>
 						<input 
 							type="text"
 							id="title"
@@ -126,20 +126,25 @@ const InputModal: FC<Props> = ({ openModal, socket }) => {
 							onChange={handleChange}
 							></input>
 					</article>
-				{[...Array(tasks)].map((e, i) => 
+					<section className="inputform__input inputform__input--tasks">
+					{[...Array(tasks)].map((e, i) => 
 					(<Task 
 						type="text" 
 						id="task"
 						handleChange={handleChange}
 						input={input}
 						key={i}/>))}
-					<article>
-						<Tooltip title="Add another task" placement="left">
-							<button onClick={addTaskInputField}>
-								<AddIcon/>
-							</button>
-						</Tooltip>
-					</article>
+						<article>
+							<Tooltip title="Add another task" placement="left">
+								<button onClick={addTaskInputField}>
+									<AddIcon/>
+								</button>
+							</Tooltip>
+						</article>
+					</section>
+
+				</section>
+				<section className="inputform__footer">
 					<article>
 						<Button type="submit" value="Create reminder"/>
 					</article>

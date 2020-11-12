@@ -35,11 +35,11 @@ const App: FC = () => {
 
   // }
 
-  useEffect(() => {
-    socket.on('connect', () => {
-     });
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //    });
 
-    }, [])
+  //   }, [])
 
     
 	useEffect(() => {

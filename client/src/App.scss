@@ -64,9 +64,13 @@ svg {
 }
 
 main {
-  margin-top: 80px;
+  margin-top: 85px;
   width: 100%;
   min-height: calc(100vh - 80px);
+
+  @media (min-width: $breakpoint-md) {
+    margin-top: 80px;
+  }
 }
 
 button {
@@ -119,8 +123,8 @@ input {
   align-items: center;
 
   form {
-    width: 25%;
-    height: 30vh;
+    width: 95%;
+    height: 65vh;
     padding: 15px;
     display: flex;
     flex-direction: column;
@@ -131,9 +135,22 @@ input {
     border-radius: 7px;
     position: relative;
 
+    @media (min-width: $breakpoint-md) {
+      width: 25%;
+      height: 30vh;
+    }
+
+    label {
+      margin-top: 20px;
+    }
+
     input {
+      width: 75%;
+      margin: 10px;
+
+      @media (min-width: $breakpoint-md) {
       width: 50%;
-      margin: 20px;
+      }
     }
   }
 

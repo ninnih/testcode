@@ -41,7 +41,7 @@ const Board: FC<Props> = ({ socket }) => {
 				<section className="board__header board__header--done">
 					<h2>Done</h2>
 				</section>
-				<section className="board__cards">
+				<section className="board__cards board__cards--done">
 					{ completed ? completed.map((card: any, i: number) => (
 												<DoneCard
 													title={card.title}

@@ -98,7 +98,7 @@ const Card: FC<Props> = ({ title, id, socket, editable, key, owner }) => {
 				onSubmit={submitUpdatedCard}
 				key={key}>
 				<section className="card__header">
-					<section>
+					<section className="card__header__title">
 						{ editable ?
 												<input
 													type="text"

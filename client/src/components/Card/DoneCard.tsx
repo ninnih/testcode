@@ -38,7 +38,7 @@ const DoneCard: FC<Props> = ({ id, title, socket, key }) => {
 		className="cardDone"
 		key={key}>
 			<section className="cardDone__header">
-				<section>
+				<section className="cardDone__header__title">
 					<h3>{title}</h3>
 				</section>
 				<section>

@@ -13,9 +13,8 @@ import MainRoutes from './modules/MainRoutes/MainRoutes';
 import InputModal from './components/InputModal/InputModal';
 import Button from './components/Button/Button';
 
-const uri = 'https://ninnih-codetest.herokuapp.com';
 const io = require('socket.io-client');
-const socket = io('http://localhost:8000/', { transports: ['websocket'] });
+const socket = io('https://ninnih-codetest.herokuapp.com', { transports: ['websocket'] });
 
 interface UsernameType {
   username: string,
@@ -101,7 +100,7 @@ const App: FC = () => {
                                       type="text" 
                                       id="username"
                                       onChange={changeName}/>
-                                    <Button type="submit" value="Submit"></Button>
+                                    <Button type="submit" value="Enter"></Button>
                                   </form>
                                 </section>
                               : null }

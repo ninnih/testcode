@@ -4,13 +4,12 @@ import {
   DELETE_REMINDER,
   UPDATE_REMINDER,
   EDIT_TASK,
-  // INITIAL_TASKS,
 } from '../constants/index';
 
 export const addReminder = (payload: Object) => {
   return {
       type: ADD_REMINDER,
-      payload
+      payload,
   }
 }
 

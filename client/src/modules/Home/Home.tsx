@@ -1,5 +1,4 @@
-import Button from '../../components/Button/Button'
-import React, { useState, FC } from 'react'
+import React, { FC } from 'react'
 import Board from '../../components/Board/Board';
 
 interface Props {

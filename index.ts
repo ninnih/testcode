@@ -1,32 +1,42 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const path = require('path');
-const app = express();
+import express, { Application } from 'express';
+import cors from 'cors';
+import http from 'http';
+import path from 'path';
+import { Socket } from 'socket.io';
 const socketIo = require('socket.io');
-const http = require('http');
+const app: Application = express();
+const server = http.createServer(app);
+const io = socketIo(server)
+const apiPort = process.env.PORT || 8000;
+
 app.use(cors({
   credentials: true, 
   origin: true
 }))
 
-const server = http.createServer(app);
-const io = socketIo(server)
-
-const apiPort = process.env.PORT || 8000;
-app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(express.static(__dirname + './../public'));
 app.use(express.static(path.resolve('./client/build')))
 
-app.use(bodyParser.json());
+interface People {
+  [name: string]: string
+}
+const people: People = {}
 
-const connections = []
-const reminderList = [];
-io.on('connect', (socket) => {
+io.on('connect', (socket: Socket) => {
   console.log('a user connected');
+
+  socket.on('join', name => {
+    people[socket.id] = name;
+    io.emit('updateName', people)
+  })
+
   socket.on('addReminder', addReminderData => {
-    reminderList.push(addReminderData)
-    io.emit('reminderAdded', addReminderData)
+    const data = {
+      ...addReminderData,
+      owner: people[socket.id]
+    }
+    
+    console.log(data)
+    io.emit('reminderAdded', data, people[socket.id])
   })
 
   socket.on('toggleReminder', toggleReminderData => {
@@ -46,11 +56,9 @@ io.on('connect', (socket) => {
   })
 
   socket.on('disconnect', () => {
-    socket.removeAllListeners();
+    delete people[socket.id]
+    io.emit('updateName', people)
  });
 });
-
-
-// app.get('*', (req, res) => res.sendFile(path.resolve('client/build/index.html')));
 
 server.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))

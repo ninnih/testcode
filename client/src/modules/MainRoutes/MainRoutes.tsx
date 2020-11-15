@@ -7,7 +7,7 @@ interface Props {
 	socket: any
 }
 
-const MainRoutes: FC<Props> = ({socket}) => {
+const MainRoutes: FC<Props> = ({ socket }) => {
 
   return (
     <Switch> 

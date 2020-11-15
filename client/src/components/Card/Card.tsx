@@ -1,27 +1,27 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import {
-	editTask,
 	toggleReminderSocketAction,
 	deleteReminderSocketAction,
 	editReminderSocketAction,
 	updateReminderSocketAction,
 } from '../../js/actions/index'
 import './Card.scss';
+import Button from '../Button/Button';
+
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import EditIcon from '@material-ui/icons/Edit';
-import Button from '../Button/Button';
 import { Tooltip } from '@material-ui/core';
-
+import { RootState } from '../../js/reducers';
 
 interface Props {
 	title: string,
 	id: string,
-	done: boolean
 	socket: any,
 	editable: boolean
+	key: number,
+	owner: string
 }
 
 interface Tasks {
@@ -29,13 +29,15 @@ interface Tasks {
 	id: string,
 }
 
-const Card: FC<Props> = ({ title, id, done, socket, editable }) => {
+const Card: FC<Props> = ({ title, id, socket, editable, key, owner }) => {
 	const dispatch = useDispatch();
-	const tasks = useSelector((state: any) => state.reminders.tasks)
+	
+	const tasks = useSelector((state: RootState) => state.reminders.tasks)
 	const [edit, setEdit] = useState<Tasks>({
 		edit: false,
 		id: '',
 	})
+
 	const [updateCardData, setUpdateCardData] = useState({
 		cardtitle: title,
 		cardid: ''
@@ -49,7 +51,7 @@ const Card: FC<Props> = ({ title, id, done, socket, editable }) => {
 			})
 	}
 
-	const updateCard = (e:any) => {
+	const updateCard = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setUpdateCardData({
 			cardtitle: e.target.value,
 			cardid: e.target.id
@@ -76,12 +78,12 @@ const Card: FC<Props> = ({ title, id, done, socket, editable }) => {
 
 	useEffect(() => {
 		dispatch(editReminderSocketAction(edit, socket))
-	}, [edit])
+	}, [edit, dispatch, socket])
 
 	const toggleDone = (e: any) => {
 		e.preventDefault()
 		const id = {id: e.currentTarget.id}
-			dispatch(toggleReminderSocketAction(id, socket))
+		dispatch(toggleReminderSocketAction(id, socket))
 	}
 
 	const deleteDone = (e:any) => {
@@ -91,18 +93,20 @@ const Card: FC<Props> = ({ title, id, done, socket, editable }) => {
 	}
 
 	return (
-			<form className="card" onSubmit={submitUpdatedCard}>
+			<form 
+				className="card" 
+				onSubmit={submitUpdatedCard}
+				key={key}>
 				<section className="card__header">
 					<section>
-						{editable ?
-						<input
-							type="text"
-							onChange={updateCard}
-							id={id}
-							value={updateCardData.cardtitle}></input>
-					: <h3>{title}</h3>
-
-					}
+						{ editable ?
+												<input
+													type="text"
+													onChange={updateCard}
+													id={id}
+													value={updateCardData.cardtitle}></input>
+											: <h3>{title}</h3>
+						}
 					</section>
 					<section className="card__header__icon">
 						<Tooltip title="Edit Reminder">
@@ -122,39 +126,43 @@ const Card: FC<Props> = ({ title, id, done, socket, editable }) => {
 						</Tooltip>
 					</section>
 				</section>
+					<section className="card__info">
+						<h5>Card created by:</h5>
+						<p>{owner}</p>
+					</section>
 				<section className="card__body">
 					<article>
 						<ul>
-							{tasks === undefined ?
-								null
-									:
-									<>{tasks.map((task: any) => (
-										task.cardid === id ?
-										<li>
-											<h4
-												onClick={(e) => editableCard(e)}
-												id={task.id}
-												>
-													{task.task}
-											</h4>
-										</li>
-										: null
-									))}</>
+							{ tasks === undefined ?
+																			null
+																		:
+																		<>{ tasks.map((task: any, i: number) => (
+																				task.cardid === id ?
+																				<li key={i}>
+																					<h4
+																						onClick={(e) => editableCard(e)}
+																						id={task.id}
+																						>
+																							{task.task}
+																					</h4>
+																				</li>
+																			: null
+																		))}</>
 							}
 						</ul>
 					</article>
 				</section>
 				<section className="card__footer">
-					{editable ?
-					<button
-						id={id}
-						onClick={deleteDone}>
-						<DeleteForeverRoundedIcon/>
-					</button>
-					: null}
-					{editable ? 
-					<Button type="submit" value="Save changes"/>
-					: null}
+					{ editable ?
+											<>
+												<button
+													id={id}
+													onClick={deleteDone}>
+													<DeleteForeverRoundedIcon/>
+												</button>
+												<Button type="submit" value="Save changes"/>
+											</>
+										: null }
 				</section>
 			</form>
 	)

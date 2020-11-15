@@ -1,14 +1,9 @@
-import React from 'react'
+import React, { FC } from 'react'
 import './AddNew.scss';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { Tooltip } from '@material-ui/core';
 
-// type AddNewProps = {
-// 	type: string,
-// 	value: string
-// }
-
-const AddNew = () => {
+const AddNew: FC = () => {
 	return (
 			<Tooltip title="Create new reminder" placement="bottom">
 				<AddBoxIcon />

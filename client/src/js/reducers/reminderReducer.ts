@@ -1,5 +1,6 @@
 import { 
-  ReminderActions
+  ReminderActions,
+  ReminderState
 } from './../types/index';
 
 import { 
@@ -11,7 +12,7 @@ import {
 } from '../constants/index';
 
 
-const initialState = {
+const initialState: ReminderState = {
   results: [],
   tasks: []
 };

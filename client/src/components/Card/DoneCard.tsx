@@ -1,6 +1,5 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import { useDispatch } from 'react-redux'
-
 import { 
 	toggleReminderSocketAction,
 	deleteReminderSocketAction 
@@ -13,26 +12,31 @@ import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 interface Props {
 	title: string,
 	id: string,
-	done: boolean
 	socket: any,
+	key: number
 }
 
-const DoneCard: FC<Props> = ({ id, title, done, socket }) => {
+const DoneCard: FC<Props> = ({ id, title, socket, key }) => {
 	const dispatch = useDispatch();
 
-	const toggleDone = (e: any) => {
+	const toggleDone = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault()
+
 		const id = {id: e.currentTarget.id}
 			dispatch(toggleReminderSocketAction(id, socket))
 	}
 
-	const deleteDone = (e:any) => {
+	const deleteDone = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault()
+
 		const id = {id: e.currentTarget.id}
 		dispatch(deleteReminderSocketAction(id, socket))
 	}
+
 	return (
-		<article className="cardDone">
+		<article 
+		className="cardDone"
+		key={key}>
 			<section className="cardDone__header">
 				<section>
 					<h3>{title}</h3>
@@ -53,9 +57,6 @@ const DoneCard: FC<Props> = ({ id, title, done, socket }) => {
 						</button>
 					</Tooltip>
 				</section>
-			</section>
-			<section className="cardDone__body">
-
 			</section>
 		</article>
 	)

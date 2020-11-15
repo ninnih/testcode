@@ -1,5 +1,5 @@
-import React, { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import React, { FC } from 'react';
+import { useSelector } from 'react-redux'
 import { RootState } from '../../js/reducers/index';
 
 import './Board.scss';
@@ -11,8 +11,8 @@ interface Props {
 }
 
 const Board: FC<Props> = ({ socket }) => {
-	const cards = useSelector((state: any) => state.reminders.results.filter((todo: any) => !todo.done))
-	const completed = useSelector((state: any) => state.reminders.results.filter((todo: any) => todo.done))
+	const cards = useSelector((state: RootState) => state.reminders.results.filter((todo: any) => !todo.done))
+	const completed = useSelector((state: RootState) => state.reminders.results.filter((todo: any) => todo.done))
 
 	return (
 		<section className="board">
@@ -21,18 +21,19 @@ const Board: FC<Props> = ({ socket }) => {
 					<h2>Todo</h2>
 				</section>
 				<section className="board__cards">
-					{cards.length === 0 ? null 
-					: <>
-					{cards.map((card: any, i: number) => (
-							<Card
-								title={card.title}
-								id={card.id}
-								done={card.done}
-								editable={card.edit}
-								socket={socket}
-							/>
-						))}
-						</>
+					{!cards ? null 
+									: <>
+											{cards.map((card: any, i: number) => (
+												<Card
+													title={card.title}
+													id={card.id}
+													editable={card.edit}
+													socket={socket}
+													key={i}
+													owner={card.owner}
+												/>
+											))}
+										</>
 					}
 				</section>
 			</section>
@@ -41,13 +42,14 @@ const Board: FC<Props> = ({ socket }) => {
 					<h2>Done</h2>
 				</section>
 				<section className="board__cards">
-					{completed ? completed.map((card:any) => (
-						<DoneCard
-							title={card.title}
-							id={card.id}
-							done={card.done}
-							socket={socket}></DoneCard>
-					)) : null }
+					{ completed ? completed.map((card: any, i: number) => (
+												<DoneCard
+													title={card.title}
+													id={card.id}
+													socket={socket}
+													key={i}/>	
+												))
+											: null }
 				</section>
 			</section>
 		</section>

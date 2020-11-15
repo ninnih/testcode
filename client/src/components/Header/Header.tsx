@@ -1,17 +1,13 @@
 import React, { FC } from 'react';
-
 import './Header.scss';
-
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import MenuIcon from '@material-ui/icons/Menu';
-import { Tooltip } from '@material-ui/core';
 import AddNew from '../AddNew/AddNew';
 
 interface Props {
-	openModal: (e: any) => void;
+	openModal: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+	users: Object
 }
 
-const Header: FC<Props> = ({ openModal }) => {
+const Header: FC<Props> = ({ openModal, users }) => {
 	return (
 		<header>
 			<section className="item item--createnew">
@@ -22,6 +18,14 @@ const Header: FC<Props> = ({ openModal }) => {
 			<section className="item item--identity">
 				<h2>Reminder App</h2>
 				<p>By Ninni Hagström</p>
+			</section>
+			<section className="item item--users">
+				<h4>Users online: {Object.values(users).length}</h4>
+				<section>
+					{Object.values(users).map((user: string, i: number) => (
+						<p key={i}>{user},</p>
+					))}
+				</section>
 			</section>
 		</header>
 	)

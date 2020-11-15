@@ -3,5 +3,4 @@ export const TOGGLE_REMINDER = 'TOGGLE_REMINDER';
 export const UPDATE_REMINDER = 'UPDATE_REMINDER';
 export const DELETE_REMINDER = 'DELETE_REMINDER';
 export const EDIT_TASK = 'EDIT_TASK';
-export const INITIAL_TASKS = 'INITIAL_TASKS';
 

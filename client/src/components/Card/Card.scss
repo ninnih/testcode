@@ -26,6 +26,26 @@
 		}
 	}
 
+	&__info {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		padding: 5px 10px;
+		background-color: $white;
+
+		h5 {
+			margin-right: 10px;
+			color: $grey;
+		}
+
+		p {
+			text-transform: capitalize;
+			color: $purple;
+			font-weight: 600;
+			font-style: italic;
+		}
+	}
+
 	&__body {
 		height: calc(100% - 109px);
 		overflow: scroll;

@@ -127,13 +127,13 @@ const InputModal: FC<Props> = ({ openModal, socket }) => {
 							></input>
 					</article>
 					<section className="inputform__input inputform__input--tasks">
-					{[...Array(tasks)].map((e, i) => 
-					(<Task 
-						type="text" 
-						id="task"
-						handleChange={handleChange}
-						input={input}
-						key={i}/>))}
+						{[...Array(tasks)].map((e, i) => 
+						(<Task 
+							type="text" 
+							id="task"
+							handleChange={handleChange}
+							input={input}
+							/>))}
 						<article>
 							<Tooltip title="Add another task" placement="left">
 								<button onClick={addTaskInputField}>

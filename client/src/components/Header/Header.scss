@@ -32,6 +32,27 @@ header {
       }
 		}
 
+		&--users {
+			width: 20%;
+			right: 10px;
+
+			@media (min-width: $breakpoint-md) {
+				right: 2%;
+			}
+			
+			section {
+				display: flex;
+
+				p {
+					margin-right: 15px;
+					text-transform: capitalize;
+					font-weight: 600;
+					font-style: italic;
+					color: $purple;
+				}
+			}
+		}
+
 		&--menu {
 			right: 10px;
 

@@ -13,7 +13,8 @@
     "dev-client": "cd client && npm start",
     "dev-server": "nodemon --exec ./node_modules/.bin/ts-node -- ./server/index.ts",
     "test": "cd client && npm test",
-    "heroku-postbuild": "tsc & cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
+    "heroku-prebuild": "cd client && npm install && npm run build && cd ..",
+    "build": "tsc --project ./src",
     "lint": "eslint . --ext .ts",
     "tslint": "tslint -c tslint.json -p tsconfig.json --fix"
   },

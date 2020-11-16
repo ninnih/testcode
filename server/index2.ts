@@ -1,8 +1,8 @@
-import express from 'express';
+import * as express from 'express';
 import { Application } from 'express';
-import cors from 'cors';
-import http from 'http';
-import path from 'path';
+import * as cors from 'cors';
+import * as http from 'http';
+import * as path from 'path';
 import { Socket } from 'socket.io';
 import { People } from './types/index';
 
@@ -12,8 +12,13 @@ const server = http.createServer(app);
 const io = socketIo(server)
 const apiPort = process.env.PORT || 8000;
 
-app.use(cors({ credentials: true, origin: true }))
+app.use(cors({
+  credentials: true, 
+  origin: true
+}))
+
 app.use(express.static(path.resolve('./client/build')))
+
 
 const people: People = {}
 

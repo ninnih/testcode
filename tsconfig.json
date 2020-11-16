@@ -15,6 +15,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "es6",
     "module": "commonjs",
+    "esModuleInterop": true,
     "moduleResolution": "node",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,

@@ -62,3 +62,5 @@ io.on('connect', (socket: Socket) => {
 });
 
 server.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))
+
+export default io;

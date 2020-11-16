@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { Application } from 'express';
 import cors from 'cors';
-import http from 'http';
+import * as http from 'http';
 import path from 'path';
 import { Socket } from 'socket.io';
 const socketIo = require('socket.io');

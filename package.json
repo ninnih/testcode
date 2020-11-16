@@ -9,13 +9,11 @@
     "node": "14.7.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "ts:watch": "tsc -w",
-    "ts:build": "tsc --project ./src",
-    "serve": "nodemon dist/index.js",
-    "build": "npm run ts:build",
-    "prod:serve": "node dist/index.js",
-    "start": "npm run build && npm run prod:serve",
+    "start": "node ./build/index.js",
+    "dev-client": "cd client && npm start",
+    "dev-server": "nodemon --exec ./node_modules/.bin/ts-node -- ./server/index.ts",
+    "test": "cd client && npm test",
+    "heroku-postbuild": "tsc & cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
     "lint": "eslint . --ext .ts",
     "tslint": "tslint -c tslint.json -p tsconfig.json --fix"
   },

@@ -10,10 +10,12 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node .build/index.js",
+    "ts:build": "tsc",
+    "prod:serve": "node dist/index.js",
+    "build": "npm run ts:build",
+    "start": "npm run build && npm run prod:serve",
     "dev": "nodemon src/index.ts",
     "heroku-prebuild": "cd client && npm install && npm run build && cd ..",
-    "build": "tsc --project ./src",
     "lint": "eslint . --ext .ts",
     "tslint": "tslint -c tslint.json -p tsconfig.json --fix"
   },

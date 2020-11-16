@@ -11,10 +11,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ts:watch": "tsc -w",
-    "ts:build": "tsc -p ./src",
-    "serve": "nodemon dist/server.js",
+    "ts:build": "tsc --project ./src",
+    "serve": "nodemon dist/index.js",
     "build": "npm run ts:build",
-    "prod:serve": "node dist/server.js",
+    "prod:serve": "node dist/index.js",
     "start": "npm run build && npm run prod:serve",
     "lint": "eslint . --ext .ts",
     "tslint": "tslint -c tslint.json -p tsconfig.json --fix"

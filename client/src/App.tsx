@@ -14,7 +14,7 @@ import InputModal from './components/InputModal/InputModal';
 import Button from './components/Button/Button';
 const io =  require('socket.io-client');
 const endpoint = 'https://ninnih-codetest.herokuapp.com';
-const socket = io('http://localhost:8000', { transports: ['websocket'] });
+const socket = io(endpoint, { transports: ['websocket'] });
 
 interface UsernameType {
   username: string,

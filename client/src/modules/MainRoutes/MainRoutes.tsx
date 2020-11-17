@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { Socket } from 'socket.io';
 
 import Home from '../Home/Home';
 
 interface Props {
-	socket: any
+	socket: Socket
 }
 
 const MainRoutes: FC<Props> = ({ socket }) => {

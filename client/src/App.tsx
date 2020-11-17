@@ -12,24 +12,32 @@ import Header from './components/Header/Header';
 import MainRoutes from './modules/MainRoutes/MainRoutes';
 import InputModal from './components/InputModal/InputModal';
 import Button from './components/Button/Button';
-
-const io = require('socket.io-client');
-const socket = io('https://ninnih-codetest.herokuapp.com', { transports: ['websocket'] });
+const io =  require('socket.io-client');
+const endpoint = 'https://ninnih-codetest.herokuapp.com';
+const socket = io('http://localhost:8000', { transports: ['websocket'] });
 
 interface UsernameType {
   username: string,
   usernameSet: boolean
 }
 
+interface ReminderServerResponse {
+  title: string,
+  done: boolean,
+  edit: boolean,
+  id: string,
+  owner: string,
+  tasks: Array<any>,
+  time: string,
+  timeDone: string,
+  expand: boolean
+}
+
 const App: FC = () => {
   const dispatch = useDispatch();
-
   const [modal, setModal] = useState<boolean | null>(false);
-  const [username, setUsername] = useState<UsernameType>({
-    username: '',
-    usernameSet: false
-  })
-  const [users, setUsers] = useState([])
+  const [username, setUsername] = useState<UsernameType>({ username: '', usernameSet: false })
+  const [users, setUsers] = useState<Array<Object>>([])
 
   const changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername({
@@ -49,38 +57,38 @@ const App: FC = () => {
     })
   }
 
-	useEffect(() => {
-    socket.on('updateName', (response: any) => {
-      setUsers(response)
-    })
-
-		socket.on('reminderAdded', (reminderDataResponse: any, id: any) => {
-			dispatch(addReminder(reminderDataResponse))
-    })
-    
-    socket.on('toggleReminderReceived', (toggleResponse: any) => {
-      dispatch(toggleReminder(toggleResponse))
-    })
-    
-    socket.on('toggleDeleteReceived', (deleteResponse: any) => {
-      dispatch(deleteReminder(deleteResponse))
-    })
-
-    socket.on('updateReminderDataReceived', (updateResponse: any) => {
-      dispatch(updateReminder(updateResponse))
-    })
-
-    socket.on('editReminderReceived', (deleteResponse: any) => {
-      dispatch(editTask(deleteResponse))
-    })
-	}, [dispatch])
-
-  const openModal = (e: any) => {
+  const openModal = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
     e.stopPropagation()
 
     !modal ? setModal(true) : setModal(false)
   }
+
+	useEffect(() => {
+    socket.on('updateName', (response: any) => {
+      setUsers(response)
+    })
+
+		socket.on('reminderAdded', (reminderDataResponse: ReminderServerResponse) => {
+      dispatch(addReminder(reminderDataResponse))
+    })
+    
+    socket.on('toggleReminderReceived', (toggleResponse: { id: string, timeDone: string }) => {
+      dispatch(toggleReminder(toggleResponse))
+    })
+    
+    socket.on('deleteReceived', (deleteResponse: { id: string }) => {
+      dispatch(deleteReminder(deleteResponse))
+    })
+
+    socket.on('updateReminderReceived', (updateResponse: { cardid: string, cardtitle: string }) => {
+      dispatch(updateReminder(updateResponse))
+    })
+
+    socket.on('editReminderReceived', (editResponse: { edit: boolean, id: string }) => {
+      dispatch(editTask(editResponse))
+    })
+	}, [dispatch])
   
   return (
     <section className="mainwrapper">

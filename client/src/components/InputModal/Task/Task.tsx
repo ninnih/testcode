@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 interface Props {
 	type: string,
 	id: string,
-	handleChange: (e: any) => void,
+	handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 	input: any,
 }
 

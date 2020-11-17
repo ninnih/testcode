@@ -5,14 +5,27 @@ import { RootState } from '../../js/reducers/index';
 import './Board.scss';
 import Card from '../Card/Card';
 import DoneCard from '../Card/DoneCard';
+import { Socket } from 'socket.io';
 
 interface Props {
-	socket: any
+	socket: Socket
+}
+
+interface Todo {
+	title: string,
+  done: boolean,
+  edit: boolean,
+  id: string,
+  owner: string,
+  tasks: string[],
+	time: string,
+	timeDone: string,
+	expand: boolean
 }
 
 const Board: FC<Props> = ({ socket }) => {
-	const cards = useSelector((state: RootState) => state.reminders.results.filter((todo: any) => !todo.done))
-	const completed = useSelector((state: RootState) => state.reminders.results.filter((todo: any) => todo.done))
+	const cards = useSelector((state: RootState) => state.reminders.results.filter((todo: Todo) => !todo.done))
+	const completed = useSelector((state: RootState) => state.reminders.results.filter((todo: Todo) => todo.done))
 
 	return (
 		<section className="board">
@@ -23,14 +36,14 @@ const Board: FC<Props> = ({ socket }) => {
 				<section className="board__cards">
 					{!cards ? null 
 									: <>
-											{cards.map((card: any, i: number) => (
+											{cards.map((card: Todo, i: number) => (
 												<Card
 													title={card.title}
 													id={card.id}
 													editable={card.edit}
 													socket={socket}
-													key={i}
 													owner={card.owner}
+													time={card.time}
 												/>
 											))}
 										</>
@@ -42,12 +55,13 @@ const Board: FC<Props> = ({ socket }) => {
 					<h2>Done</h2>
 				</section>
 				<section className="board__cards board__cards--done">
-					{ completed ? completed.map((card: any, i: number) => (
+					{ completed ? completed.map((card: Todo, i: number) => (
 												<DoneCard
 													title={card.title}
 													id={card.id}
 													socket={socket}
-													key={i}/>	
+													timeDone={card.timeDone}
+													/>	
 												))
 											: null }
 				</section>

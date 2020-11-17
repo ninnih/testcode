@@ -12,7 +12,6 @@
 		width: calc(100vw - 20px);
 		flex-direction: row;
 		padding: 15px;
-
 	}
 
 	&__wrapper {
@@ -20,18 +19,16 @@
 		width: 90%;
 		height: 100%;
 		margin: 10px;
-		overflow: scroll;
-		overflow-x: hidden;
 		background-color: $white;
 		border-radius: 7px;
 
 		@media (min-width: $breakpoint-md) {
 			height: 100%;
-			}
+		}
 
 		&--todo {
 			width: calc(100% - 20px);
-			height: 65vh;
+			height: 90vh;
 
 			@media (min-width: $breakpoint-md) {
 			width: 70%;
@@ -39,7 +36,7 @@
 		}
 
 		&--done {
-			height: 65vh;
+			height: 90vh;
 			width: calc(100% - 20px);
 
 			@media (min-width: $breakpoint-md) {
@@ -57,7 +54,7 @@
 		z-index: 1;
 
 		&--todo {
-			background-color: $terracotta;
+			background-color: $dark-bluegrey;
 		}
 
 		&--done {
@@ -67,21 +64,26 @@
 
 	&__cards {
 		position: absolute;
-		top: 65px;
-		left: 15px;
-		height: 100%;
-		width: calc(100% - 30px) ;
+		// top: 65px;
+		// left: 15px;
+		height: calc(100% - 70px);
+		width: 100% ;
 		display: flex;
-		justify-content: flex-start;
+		justify-content: space-evenly;
 		align-items: flex-start;
+		flex-direction: row;
 		flex-wrap: wrap;
-
-		&--done {
-			height: min-content;
-		}
+		overflow: scroll;
+    overflow-x: hidden;
 
 		@media (min-width: $breakpoint-md) {
-			top: 100px;
+			// top: 100px;
+		}
+
+		&--done {
+			flex-direction: column;
+			flex-wrap: nowrap;
+			justify-content: flex-start;
 		}
 	}
 }

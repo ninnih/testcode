@@ -8,7 +8,6 @@ import {
 } from '../../js/actions/index'
 import './Card.scss';
 import Button from '../Button/Button';
-
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import EditIcon from '@material-ui/icons/Edit';
@@ -20,8 +19,8 @@ interface Props {
 	id: string,
 	socket: any,
 	editable: boolean
-	key: number,
 	owner: string
+	time: string
 }
 
 interface Tasks {
@@ -29,16 +28,19 @@ interface Tasks {
 	id: string,
 }
 
-const Card: FC<Props> = ({ title, id, socket, editable, key, owner }) => {
+interface UpdateCard {
+	cardtitle: string,
+	cardid: string
+}
+
+const Card: FC<Props> = ({ title, id, socket, editable, owner, time }) => {
 	const dispatch = useDispatch();
-	
 	const tasks = useSelector((state: RootState) => state.reminders.tasks)
 	const [edit, setEdit] = useState<Tasks>({
 		edit: false,
 		id: '',
 	})
-
-	const [updateCardData, setUpdateCardData] = useState({
+	const [updateCardData, setUpdateCardData] = useState<UpdateCard>({
 		cardtitle: title,
 		cardid: ''
 	});
@@ -56,16 +58,7 @@ const Card: FC<Props> = ({ title, id, socket, editable, key, owner }) => {
 			cardtitle: e.target.value,
 			cardid: e.target.id
 		})
-		// socket.emit('editData', updateCardData.cardtitle)
 	}
-
-	// socket.on('editDataReceived', (editDataResponse: any) => {
-	// 	// setUpdateCardData(editDataResponse)
-	// 	setUpdateCardData({
-	// 		...updateCardData,
-	// 		cardtitle: editDataResponse
-	// 	})
-	// })
 
 	const submitUpdatedCard = (e: React.FormEvent) => {
 		e.preventDefault()
@@ -80,13 +73,13 @@ const Card: FC<Props> = ({ title, id, socket, editable, key, owner }) => {
 		dispatch(editReminderSocketAction(edit, socket))
 	}, [edit, dispatch, socket])
 
-	const toggleDone = (e: any) => {
+	const toggleDone = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault()
-		const id = {id: e.currentTarget.id}
+		const id = { id: e.currentTarget.id }
 		dispatch(toggleReminderSocketAction(id, socket))
 	}
 
-	const deleteDone = (e:any) => {
+	const deleteDone = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault()
 		const id = {id: e.currentTarget.id}
 		dispatch(deleteReminderSocketAction(id, socket))
@@ -96,7 +89,7 @@ const Card: FC<Props> = ({ title, id, socket, editable, key, owner }) => {
 			<form 
 				className="card" 
 				onSubmit={submitUpdatedCard}
-				key={key}>
+				>
 				<section className="card__header">
 					<section className="card__header__title">
 						{ editable ?
@@ -127,8 +120,13 @@ const Card: FC<Props> = ({ title, id, socket, editable, key, owner }) => {
 					</section>
 				</section>
 					<section className="card__info">
-						<h5>Card created by:</h5>
-						<p>{owner}</p>
+						<article>
+							<h5>Card created by:</h5>
+							<p>{owner}</p>
+						</article>
+						<article>
+							<h5>At: {time}</h5>
+						</article>
 					</section>
 				<section className="card__body">
 					<article>

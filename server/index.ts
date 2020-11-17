@@ -1,65 +1,71 @@
-import * as express from 'express';
-import { Application } from 'express';
-import * as cors from 'cors';
-import * as http from 'http';
-import * as path from 'path';
-import { Socket } from 'socket.io';
-import { People } from './types/index';
+import express, { Application } from 'express';
+import { Socket, Server} from 'socket.io';
+import socketio from 'socket.io';
+import http from 'http';
+import path from 'path';
+import { People, Reminder } from './types/index';
 
-const socketIo = require('socket.io');
 const app: Application = express();
 const server = http.createServer(app);
-const io = socketIo(server)
-const apiPort = process.env.PORT || 8000;
-
-app.use(cors({
-  credentials: true, 
-  origin: true
-}))
+const io: Server = socketio(server)
+const port = process.env.PORT || 8000;
 
 app.use(express.static(path.resolve('./client/build')))
 
-
 const people: People = {}
 
-io.on('connect', (socket: Socket) => {
-  console.log('a user connected');
+const currentTime = () => {
+  const current = new Date(); 
+  const h = String(current.getHours());
+  let m = String(current.getMinutes()); 
 
-  socket.on('join', name => {
+  if(m.length < 2 ){
+    m = `0${m}`;
+  }
+
+  return `${h}:${m}`;
+}
+
+io.on('connect', (socket: Socket) => {
+  socket.on('join', (name: string)=> {
     people[socket.id] = name;
     io.emit('updateName', people)
   })
 
-  socket.on('addReminder', addReminderData => {
-    const data = {
+  socket.on('addReminder', (addReminderData: Reminder) => {
+    const data: Reminder = {
       ...addReminderData,
-      owner: people[socket.id]
+      owner: people[socket.id],
+      time: currentTime()
     }
-    
-    console.log(data)
-    io.emit('reminderAdded', data, people[socket.id])
+
+    io.emit('reminderAdded', data)
   })
 
-  socket.on('toggleReminder', toggleReminderData => {
-    io.emit('toggleReminderReceived', toggleReminderData)
+  socket.on('toggleReminder', (toggleReminderData: { id: string }) => {
+    const data = {
+      ...toggleReminderData,
+      timeDone: currentTime()
+    }
+    io.emit('toggleReminderReceived', data)
   })
 
-  socket.on('editReminder', editReminderData => {
+  socket.on('editReminder', (editReminderData: { edit: boolean, id: string }) => {
     io.emit('editReminderReceived', editReminderData)
   })
 
-  socket.on('updateReminder', updateReminderData => {
-    io.emit('updateReminderDataReceived', updateReminderData)
+  socket.on('updateReminder', (updateReminderData: { cardid: string, cardtitle: string }) => {
+    io.emit('updateReminderReceived', updateReminderData)
   })
 
-  socket.on('deleteReminder', deleteReminderData => {
-    io.emit('toggleDeleteReceived', deleteReminderData)
+  socket.on('deleteReminder', (deleteReminderData: { id: string }) => {
+    io.emit('deleteReceived', deleteReminderData)
   })
 
   socket.on('disconnect', () => {
     delete people[socket.id]
     io.emit('updateName', people)
- });
+  });
 });
 
-server.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))
+server.listen(port, () => console.log(`Server running on port ${port}`))

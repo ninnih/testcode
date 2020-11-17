@@ -1,12 +1,10 @@
-import React, { FC, useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { FC, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import './InputModal.scss';
 import { v4 as uuidv4 } from 'uuid';
 import { 
-	addReminder,
 	addReminderSocketAction
  } from '../../js/actions/index'
-
 
 import Button from '../Button/Button'
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -15,7 +13,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { Tooltip } from '@material-ui/core';
 
 interface Props {
-	openModal: (e: any) => void,
+	openModal: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void,
 	socket: any
 }
 
@@ -24,10 +22,12 @@ interface Input {
 	title: string,
 	owner: string,
 	tasks: Array<any>,
-	urgent: boolean,
 	error: string,
 	id: string,
-	edit: boolean
+	edit: boolean,  
+	time: string,
+	timeDone: string,
+  expand: boolean
 }
 
 const InputModal: FC<Props> = ({ openModal, socket }) => {
@@ -38,23 +38,25 @@ const InputModal: FC<Props> = ({ openModal, socket }) => {
 		done: false,
 		owner: '',
 		tasks: [{}],
-		urgent: false,
 		error: '',
 		id: '',
-		edit: false
+		edit: false,
+		time: '',
+		timeDone: '',
+		expand: false
 	})
 	
 	const [tasks, setTasks] = useState<number>(1)
 
-	const addTaskInputField = (e: any) => {
+	const addTaskInputField = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault()
 		e.stopPropagation()
 		setTasks(prevCount => prevCount + 1)
 	}
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const taskArr: any = [];
-		let target = Array.from(document.getElementsByName('task'));
+		const taskArr: Array<any> = [];
+		const target = Array.from(document.getElementsByName('task'));
 
 		target.map((task: any) => {
 			taskArr.push({
@@ -64,13 +66,13 @@ const InputModal: FC<Props> = ({ openModal, socket }) => {
 				edit: false,
 				cardid: ''
 			})
+			return taskArr
 		})
 
 		setInput({
 			...input,
 			tasks: taskArr,
 			[e.target.id]: e.target.value,
-			urgent: false,
 			id: uuidv4(),
 		})
 	}
@@ -127,13 +129,14 @@ const InputModal: FC<Props> = ({ openModal, socket }) => {
 							></input>
 					</article>
 					<section className="inputform__input inputform__input--tasks">
-						{[...Array(tasks)].map((e, i) => 
+						{[...Array(tasks)].map((e: any, i: number) => 
 						(<Task 
 							type="text" 
 							id="task"
 							handleChange={handleChange}
 							input={input}
-							/>))}
+							/>
+						))}
 						<article>
 							<Tooltip title="Add another task" placement="left">
 								<button onClick={addTaskInputField}>
@@ -142,11 +145,10 @@ const InputModal: FC<Props> = ({ openModal, socket }) => {
 							</Tooltip>
 						</article>
 					</section>
-
 				</section>
 				<section className="inputform__footer">
 					<article>
-						<Button type="submit" value="Create reminder"/>
+						<Button type="submit" value="Create reminder" />
 					</article>
 				</section>
 			</form>

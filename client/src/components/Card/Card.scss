@@ -2,12 +2,12 @@
 
 .card {
 	position: relative;
-	height: 70%;
+	height: 100%;
 	max-height: 500px;
 	width: 30%;
 	max-width: 400px;
 	min-width: 300px;
-	margin: 10px auto;
+	margin: 20px auto;
 	border-radius: 7px;
 	background-color: white;
 	box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.15);
@@ -22,12 +22,14 @@
 		justify-content: space-between;
 		align-items: center;
 		min-height: 50px;
+		max-height: 80px;
 		padding: 10px;
-		background-color: $orange;
+		background-color: $bluegrey;
 		border-radius: 7px 7px 0 0 ;
 
 		&__title {
 			width: 65%;
+			text-overflow: ellipsis;
 		}
 
 		&__icon {
@@ -39,26 +41,33 @@
 
 	&__info {
 		display: flex;
-		justify-content: flex-end;
-		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		align-items: flex-end;
 		padding: 5px 10px;
+		height: 50px;
 		background-color: $white;
 
-		h5 {
-			margin-right: 10px;
-			color: $grey;
-		}
+		article {
+			display: flex;
+			align-items: center;
 
-		p {
-			text-transform: capitalize;
-			color: $purple;
-			font-weight: 600;
-			font-style: italic;
+			h5 {
+				color: $grey;
+			}
+	
+			p {
+				text-transform: capitalize;
+				color: $terracotta;
+				font-weight: 500;
+				font-style: italic;
+				margin-left: 10px;
+			}
 		}
 	}
 
 	&__body {
-		max-height: calc(100% - 215px);
+		height: calc(100% - 130px);
 		overflow: scroll;
 		overflow-x: hidden;
 

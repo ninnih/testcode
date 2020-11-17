@@ -40,7 +40,8 @@ const payload = action.payload;
         results: state.results.map((task: any) =>
           task.id === payload.id ? { 
 						...task, 
-						done: !task.done, 
+            done: !task.done,
+            timeDone: payload.timeDone 
 					} 
 						: task
         )

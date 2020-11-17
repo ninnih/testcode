@@ -8,15 +8,16 @@ import './DoneCard.scss';
 import { Tooltip } from '@material-ui/core';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
+import { Socket } from 'socket.io';
 
 interface Props {
 	title: string,
 	id: string,
-	socket: any,
-	key: number
+	socket: Socket,
+	timeDone: string
 }
 
-const DoneCard: FC<Props> = ({ id, title, socket, key }) => {
+const DoneCard: FC<Props> = ({ id, title, socket, timeDone }) => {
 	const dispatch = useDispatch();
 
 	const toggleDone = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -36,7 +37,7 @@ const DoneCard: FC<Props> = ({ id, title, socket, key }) => {
 	return (
 		<article 
 		className="cardDone"
-		key={key}>
+		>
 			<section className="cardDone__header">
 				<section className="cardDone__header__title">
 					<h3>{title}</h3>
@@ -56,6 +57,9 @@ const DoneCard: FC<Props> = ({ id, title, socket, key }) => {
 							<DeleteForeverRoundedIcon/>
 						</button>
 					</Tooltip>
+				</section>
+				<section>
+					<h5>{timeDone}</h5>
 				</section>
 			</section>
 		</article>

@@ -6,6 +6,37 @@ import {
 	DELETE_REMINDER
 } from './../constants/index';
 
+export interface Reminder {
+	title: string,
+  done: boolean,
+  edit: boolean,
+  id: string,
+  owner: string,
+  tasks: Array<any>,
+	time: string,
+	timeDone: string,
+	expand: boolean
+}
+
+export interface TogglePayload {
+	id: string,
+	timeDone: string,
+}
+
+export interface EditPayload {
+	edit: boolean, 
+	id: string
+}
+
+export interface UpdatePayload {
+	cardid: string, 
+	cardtitle: string
+}
+
+export interface DeletePayload {
+	id: string
+}
+
 export type ReminderActions = 
 AddReminderAction | 
 EditTaskAction | 
@@ -37,7 +68,6 @@ export interface DeleteReminderAction {
 	type: typeof DELETE_REMINDER
 	payload: any
 }
-
 
 export interface ReminderState {
 	results: Array<Object>;

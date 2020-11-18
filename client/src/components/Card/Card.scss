@@ -12,6 +12,7 @@
 
 	@media (min-width: $breakpoint-md) {
 		height: 100%;
+		min-width: 300px;
 		width: calc(25% - 40px);
 		margin: 20px;
 	}

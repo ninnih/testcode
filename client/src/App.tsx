@@ -12,7 +12,7 @@ import Header from './components/Header/Header';
 import MainRoutes from './modules/MainRoutes/MainRoutes';
 import InputModal from './components/InputModal/InputModal';
 import Button from './components/Button/Button';
-const io =  require('socket.io-client');
+const io = require('socket.io-client');
 const endpoint = 'https://ninnih-codetest.herokuapp.com';
 const socket = io(endpoint, { transports: ['websocket'] });
 

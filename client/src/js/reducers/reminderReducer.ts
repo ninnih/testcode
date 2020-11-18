@@ -75,7 +75,7 @@ const payload = action.payload;
           edit: !task.edit
         } 
           : task
-      )     
+        )     
       }
 
 

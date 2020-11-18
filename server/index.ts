@@ -17,11 +17,7 @@ const people: People = {}
 const currentTime = () => {
   const current = new Date(); 
   const h = String(current.getHours());
-  let m = String(current.getMinutes()); 
-
-  if(m.length < 2 ){
-    m = `0${m}`;
-  }
+  const m = String(current.getMinutes()); 
 
   return `${h}:${m}`;
 }

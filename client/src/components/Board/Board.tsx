@@ -38,12 +38,8 @@ const Board: FC<Props> = ({ socket }) => {
 									: <>
 											{cards.map((card: Todo, i: number) => (
 												<Card
-													title={card.title}
-													id={card.id}
-													editable={card.edit}
 													socket={socket}
-													owner={card.owner}
-													time={card.time}
+													card={card}
 												/>
 											))}
 										</>
@@ -57,10 +53,8 @@ const Board: FC<Props> = ({ socket }) => {
 				<section className="board__cards board__cards--done">
 					{ completed ? completed.map((card: Todo, i: number) => (
 												<DoneCard
-													title={card.title}
-													id={card.id}
 													socket={socket}
-													timeDone={card.timeDone}
+													card={card}
 													/>	
 												))
 											: null }

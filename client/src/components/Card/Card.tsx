@@ -13,14 +13,11 @@ import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import EditIcon from '@material-ui/icons/Edit';
 import { Tooltip } from '@material-ui/core';
 import { RootState } from '../../js/reducers';
+import { Socket } from 'socket.io';
 
 interface Props {
-	title: string,
-	id: string,
-	socket: any,
-	editable: boolean
-	owner: string
-	time: string
+	card: any
+	socket: Socket,
 }
 
 interface Tasks {
@@ -33,7 +30,7 @@ interface UpdateCard {
 	cardid: string
 }
 
-const Card: FC<Props> = ({ title, id, socket, editable, owner, time }) => {
+const Card: FC<Props> = ({ socket, card }) => {
 	const dispatch = useDispatch();
 	const tasks = useSelector((state: RootState) => state.reminders.tasks)
 	const [edit, setEdit] = useState<Tasks>({
@@ -41,7 +38,7 @@ const Card: FC<Props> = ({ title, id, socket, editable, owner, time }) => {
 		id: '',
 	})
 	const [updateCardData, setUpdateCardData] = useState<UpdateCard>({
-		cardtitle: title,
+		cardtitle: card.title,
 		cardid: ''
 	});
 
@@ -92,27 +89,20 @@ const Card: FC<Props> = ({ title, id, socket, editable, owner, time }) => {
 				>
 				<section className="card__header">
 					<section className="card__header__title">
-						{ editable ?
+						{ card.edit ?
 												<input
 													type="text"
 													onChange={updateCard}
-													id={id}
-													value={updateCardData.cardtitle}></input>
-											: <h3>{title}</h3>
+													id={card.id}
+													value={updateCardData.cardtitle}
+													placeholder={card.title}></input>
+											: <Tooltip title={card.title} placement="top"><h3>{card.title}</h3></Tooltip>
 						}
 					</section>
 					<section className="card__header__icon">
-						<Tooltip title="Edit Reminder">
-							<button
-								id={id}
-								onClick={(e) => editableCard(e)}
-								>
-								<EditIcon/>
-							</button>
-						</Tooltip>
 						<Tooltip title="Mark as done">
 							<button
-								id={id}
+								id={card.id}
 								onClick={toggleDone}>
 								<CheckCircleOutlineIcon/>
 							</button>
@@ -121,11 +111,18 @@ const Card: FC<Props> = ({ title, id, socket, editable, owner, time }) => {
 				</section>
 					<section className="card__info">
 						<article>
-							<h5>Card created by:</h5>
-							<p>{owner}</p>
+							<Tooltip title="Edit Reminder">
+								<button
+									id={card.id}
+									onClick={(e) => editableCard(e)}
+									>
+									<EditIcon/>
+								</button>
+							</Tooltip>
 						</article>
 						<article>
-							<h5>At: {time}</h5>
+							<h5>Card created at {card.time} by</h5>
+							<p>{card.owner}</p>
 						</article>
 					</section>
 				<section className="card__body">
@@ -135,7 +132,7 @@ const Card: FC<Props> = ({ title, id, socket, editable, owner, time }) => {
 																			null
 																		:
 																		<>{ tasks.map((task: any, i: number) => (
-																				task.cardid === id ?
+																				task.cardid === card.id ?
 																				<li key={i}>
 																					<h4
 																						onClick={(e) => editableCard(e)}
@@ -151,10 +148,10 @@ const Card: FC<Props> = ({ title, id, socket, editable, owner, time }) => {
 					</article>
 				</section>
 				<section className="card__footer">
-					{ editable ?
+					{ card.edit ?
 											<>
 												<button
-													id={id}
+													id={card.id}
 													onClick={deleteDone}>
 													<DeleteForeverRoundedIcon/>
 												</button>

@@ -11,13 +11,11 @@ import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import { Socket } from 'socket.io';
 
 interface Props {
-	title: string,
-	id: string,
 	socket: Socket,
-	timeDone: string
+	card: any
 }
 
-const DoneCard: FC<Props> = ({ id, title, socket, timeDone }) => {
+const DoneCard: FC<Props> = ({ socket, card }) => {
 	const dispatch = useDispatch();
 
 	const toggleDone = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -35,32 +33,35 @@ const DoneCard: FC<Props> = ({ id, title, socket, timeDone }) => {
 	}
 
 	return (
-		<article 
-		className="cardDone"
-		>
+		<article className="cardDone">
 			<section className="cardDone__header">
 				<section className="cardDone__header__title">
-					<h3>{title}</h3>
+					<h3>{card.title}</h3>
 				</section>
 				<section>
 					<Tooltip title="Mark as not done">
 						<button
-							id={id}
+							id={card.id}
 							onClick={toggleDone}>
 							<CheckCircleRoundedIcon/>
 						</button>
 					</Tooltip>
 					<Tooltip title="Delete reminder">
 						<button
-							id={id}
+							id={card.id}
 							onClick={deleteDone}>
 							<DeleteForeverRoundedIcon/>
 						</button>
 					</Tooltip>
 				</section>
-				<section>
-					<h5>{timeDone}</h5>
-				</section>
+			</section>
+			<section className="cardDone__body">
+				<article>
+					<h5>Created at: {card.time} by <p>{card.owner}</p></h5>
+				</article>
+				<article>
+					<h5>Marked done at: {card.timeDone}</h5>
+				</article>
 			</section>
 		</article>
 	)

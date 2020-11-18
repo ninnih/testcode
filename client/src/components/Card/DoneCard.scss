@@ -22,5 +22,19 @@
 	}
 
 	&__body {
+		display: flex;
+		justify-content: space-between;
+		padding: 15px;
+
+		h5 {
+			color: $grey;
+		}
+
+		p {
+			color: $orange;
+			text-transform: capitalize;
+			display: inline;
+			font-style: italic;
+		}
 	}
 }
